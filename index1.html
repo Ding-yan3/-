@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>js考试</title>
+    <style>
+        body{
+            padding:20px;
+        }
+        table{
+            width:80%;
+        }
+        td{
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    姓名：<input type="text" id="name"><br>
+    性别：<input type="text" id="sex"><br>
+    年龄：<input type="text" id="age"><br>
+    <br>    
+    <button id="selectRemove">选中删除</button>
+    <button id="add">添加</button>
+    <hr>
+    <table>
+        <thead>
+            <tr>
+                <td>全选<input id="all" type="checkbox"></td>
+                <td>姓名</td>
+                <td>性别</td>
+                <td>年龄</td>
+                <td>时间</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <tr>
+
+            </tr>
+        </tbody>
+    </table>
+    
+</body>
+<script>
+    let name = document.querySelector("#name")
+    let sex = document.querySelector("#sex")
+    let age = document.querySelector("#age")
+    let add = document.querySelector("#add")
+    let tbody = document.querySelector("tbody")
+    let selectRemove = document.querySelector("#selectRemove")
+    let all = document.querySelector("#all")
+    let nameTxt = null;
+    let sexTxt = null;
+    let ageTxt = null;
+    let arr = []
+
+    // 名字触发键盘
+    name.oninput = function(event) {
+        nameTxt = event.target.value
+    }
+    // 性别触发键盘
+    sex.oninput = function(event) {
+        sexTxt = event.target.value
+    }
+    // 年龄触发键盘
+    age.oninput = function(event) {
+        ageTxt = event.target.value
+    }
+    // 添加方法
+    add.onclick = () => {
+        console.log(nameTxt,sexTxt,ageTxt)
+        if(nameTxt&&sexTxt&&ageTxt){
+            let time = CurentTime()
+            console.log(time)
+            let obj = {
+                name:nameTxt,
+                sex: sexTxt,
+                age: ageTxt,
+                checked:false,
+                time:time
+            }
+            arr.push(obj)
+            console.log(arr)
+            render(arr)
+        } else {
+            alert("姓名或性别不能为空")
+        }
+    }
+    // 全选
+    all.onclick=function(event) {
+        console.log(event.target.checked)
+        console.log(event.target)
+        if(!event.target.checked){
+            arr.forEach((item)=>{
+                item.checked = false
+            })
+            render(arr)
+        } else if(event.target.checked) {
+            arr.forEach((item)=>{
+                item.checked = true
+            })
+            render(arr)
+        }
+        console.log(arr)
+        // render(arr)
+    }
+    // 删除选中方法
+    selectRemove.onclick = function() {
+        for(let i=0;i<arr.length;i++) {
+            console.log(arr[i].checked)
+            if(arr[i].checked) {
+                arr.splice(i,1)
+                i--
+            }
+        }
+        render(arr)
+    }
+    // 渲染方法
+    function render(arr) {
+        tbody.innerHTML = ""
+        for (let i = 0;i<arr.length;i++) {
+            let tr = document.createElement("tr")
+            let input = null 
+            if(arr[i].checked) {
+                input = `
+                    <td><input type="checkbox" checked onclick="check(${i})"></td>
+                `
+            } else {
+                input = `
+                    <td><input type="checkbox" onclick="check(${i})"></td>
+                `
+            }
+            tr.innerHTML = `
+                ${input}
+                <td>${arr[i].name}</td>
+                <td>${arr[i].sex}</td>
+                <td>${arr[i].age}</td>
+                <td>${arr[i].time}</td>
+                <td><button onclick="del(${i})">删除</button></td>
+            `
+            tbody.appendChild(tr)
+        }
+        
+    }
+    // 选中切换
+    function check(i) {
+        arr[i].checked = !arr[i].checked
+    }
+    // 删除当前
+    function del(index) {
+        arr.splice(index,1)
+        console.log(arr)
+        render(arr)
+    }
+    // 获取当前时间
+    function CurentTime() {
+            var now = new Date();
+            
+            var year = now.getFullYear();       //年
+            var month = now.getMonth() + 1;     //月
+            var day = now.getDate();            //日
+            
+            var hh = now.getHours();            //时
+            var mm = now.getMinutes();          //分
+            var ss = now.getSeconds();           //秒
+            
+            var clock = year + "-";
+            
+            if(month < 10)
+                clock += "0";
+            
+            clock += month + "-";
+            
+            if(day < 10)
+                clock += "0";
+                
+            clock += day + " ";
+            
+            if(hh < 10)
+                clock += "0";
+                
+            clock += hh + ":";
+            if (mm < 10) clock += '0';
+            clock += mm + ":";
+             
+            if (ss < 10) clock += '0';
+            clock += ss;
+            return(clock);
+    }
+
+</script>
+</html>

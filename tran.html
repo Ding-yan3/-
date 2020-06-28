@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .content{
+            position: relative;
+        }
+        .div{
+            background: red;
+            width:200px;
+            height:200px;
+            position: absolute;
+            left: 0;
+            top:0;
+            transition: all 2s;
+        }
+        .box{
+            background: blue;
+            width: 400px;
+            height:100px;
+            left:500px;
+            transition: all 2s;
+        }
+    </style>
+</head>
+<body>
+    <button>点击移动</button>
+    <div class="content">
+        <div id="div" class="div"></div>
+    </div>
+   
+</body>
+<script>
+    var button = document.querySelector("button")
+    var div = document.querySelector("#div")
+    var bool = true
+    button.onclick = function() {
+        if(bool) {
+            div.className = "div box"
+        } else {
+            div.className = "div"
+        }
+        bool = !bool
+        
+    }
+</script>
+</html>
